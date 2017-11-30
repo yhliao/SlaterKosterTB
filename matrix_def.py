@@ -10,6 +10,15 @@ orbitals = ["s",
             "xy_","yz_","xz_","x2y2_","3z2r2_" ]
 sk2e = SK2E()
 
+SO_terms =[
+   ["x" ,"x_",-1j],
+   ["x" ,"z_",1],
+   ["x_","z_",1]
+   ["y" ,"y_",-1],
+   ["y" ,"z" ,1j],
+   ["y_","z" ,1j],
+]
+
 atom_num    = len(atoms)
 orbital_num = len(orbitals)
 H_dim = atom_num * orbital_num
@@ -44,6 +53,24 @@ class TBblock:
          for orb_c in orbitals :
             c_idx = get_index(atom_c,orb_c)
             H[r_idx,c_idx] = sk2e.calc_E(l,m,n,orb_r,orb_c,skparam)
+
+   ### Onsite Energy filling for  
+   ### for reference cell only (d=0)
+   def fill_Onsite(self,atom,osparam):
+      assert(np.linlag.norm(self.d)==0)
+      ## Fill out the on site diagonal
+      for orb in orbitals:
+         idx = get_index(atom,orb):
+         ## treating spin up and down indifferently
+         ## so remove "_" in orbital name
+         self.H[idx,idx] = osparam[orb.replace("_","")]
+
+      ## spin-orbit interactions
+      lambda_SO = osparam["SO"] 
+      for term in SO_terms:
+         self.H[term[0],term[1]] = lambda_SO*term[2]
+         ## make sure it is hermitian
+         self.H[term[1],term[0]] = lambda_SO*np.conj(term[2])
 
    def get_block(k):
       ## k: wavevector specified for band structure calculation
