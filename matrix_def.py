@@ -60,7 +60,7 @@ class TBblock:
       assert(np.linlag.norm(self.d)==0)
       ## Fill out the on site diagonal
       for orb in orbitals:
-         idx = get_index(atom,orb):
+         idx = get_index(atom,orb)
          ## treating spin up and down indifferently
          ## so remove "_" in orbital name
          self.H[idx,idx] = osparam[orb.replace("_","")]
