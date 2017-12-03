@@ -42,17 +42,22 @@ class TBblock:
       self.H = np.zeros((H_dim,H_dim),dtype="complex")
       self.d = d
 
-   def fill_SK(self, atom_r, atom_c, l,m,n, skparam):
+   def fill_SK(self, atom_r, atom_c, lmn, skparam):
       ### fill all the two-center integrals corresponding to 
       ###  the atomic interactions between atom_r and atom_c
       ## atom_r: atom in the reference cell
       ## atom_c: atom in the represented cell
       ## l,m,n: direction cosines of atom_r->atom_c vector
+      norm_lmn = np.linalg.norm(lmn)
+      l = lmn[0]
+      m = lmn[1]
+      n = lmn[2]
+      assert(1-1e-6<norm_lmn and norm_lmn<1+1e-6)
       for orb_r in orbitals :
          r_idx = get_index(atom_r,orb_r)
          for orb_c in orbitals :
             c_idx = get_index(atom_c,orb_c)
-            H[r_idx,c_idx] = sk2e.calc_E(l,m,n,orb_r,orb_c,skparam)
+            self.H[r_idx,c_idx] = sk2e.calc_E(l,m,n,orb_r,orb_c,skparam)
 
    ### Onsite Energy filling for  
    ### for reference cell only (d=0)
