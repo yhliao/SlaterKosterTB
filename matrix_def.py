@@ -13,7 +13,7 @@ sk2e = SK2E()
 SO_terms =[
    ["x" ,"x_",-1j],
    ["x" ,"z_",1],
-   ["x_","z_",1]
+   ["x_","z_",1],
    ["y" ,"y_",-1],
    ["y" ,"z" ,1j],
    ["y_","z" ,1j],
@@ -57,7 +57,7 @@ class TBblock:
    ### Onsite Energy filling for  
    ### for reference cell only (d=0)
    def fill_Onsite(self,atom,osparam):
-      assert(np.linlag.norm(self.d)==0)
+      assert(np.linalg.norm(self.d)==0)
       ## Fill out the on site diagonal
       for orb in orbitals:
          idx = get_index(atom,orb)
@@ -68,9 +68,11 @@ class TBblock:
       ## spin-orbit interactions
       lambda_SO = osparam["SO"] 
       for term in SO_terms:
-         self.H[term[0],term[1]] = lambda_SO*term[2]
+         idx0 = get_index(atom,term[0])
+         idx1 = get_index(atom,term[1])
+         self.H[idx0,idx1] = lambda_SO*term[2]
          ## make sure it is hermitian
-         self.H[term[1],term[0]] = lambda_SO*np.conj(term[2])
+         self.H[idx1,idx0] = lambda_SO*np.conj(term[2])
 
    def get_block(k):
       ## k: wavevector specified for band structure calculation
