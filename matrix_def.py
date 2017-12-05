@@ -39,7 +39,7 @@ class TBblock:
    def __init__(self,d):
       ## d: translation vector from the refernece cell to 
       ##    the represented cell
-      self.H = np.zeros((H_dim,H_dim),dtype="complex")
+      self.H = np.matrix(np.zeros((H_dim,H_dim),dtype="complex"))
       self.d = d
 
    def fill_SK(self, atom_r, atom_c, lmn, skparam):
@@ -52,7 +52,7 @@ class TBblock:
       l = lmn[0]
       m = lmn[1]
       n = lmn[2]
-      assert(1-1e-6<norm_lmn and norm_lmn<1+1e-6)
+      assert(np.isclose(norm_lmn,1))
       for orb_r in orbitals :
          r_idx = get_index(atom_r,orb_r)
          for orb_c in orbitals :
