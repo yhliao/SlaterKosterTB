@@ -35,3 +35,24 @@ H03.fill_SK("Mo" ,"Mo" ,[-1./2,-sqrt(3)/2,0],MoMo)
 H03.fill_SK("S_u","S_u",[-1./2,-sqrt(3)/2,0],SS)
 H03.fill_SK("S_d","S_d",[-1./2,-sqrt(3)/2,0],SS)
 ### TODO: 2 Mo-S bonds
+
+
+### H04
+H01.fill_SK("Mo" ,"Mo" ,[1./2,-sqrt(3)/2,0],MoMo)
+H01.fill_SK("S_u","S_u",[1./2,-sqrt(3)/2,0],SS)
+H01.fill_SK("S_d","S_d",[1./2,-sqrt(3)/2,0],SS)
+H01.fill_SK("S_d","S_d",[0.4483428791,-0.7765526458,0.4426676528],MoS)
+H01.fill_SK("S_d","S_d",[0.4483428791,-0.7765526458,-0.4426676528],MoS)
+
+
+### H05
+H02.fill_SK("Mo" ,"Mo" ,[1,0,0],MoMo)
+H02.fill_SK("S_u","S_u",[1,0,0],SS)
+H02.fill_SK("S_d","S_d",[1,0,0],SS)
+
+### H06
+H03.fill_SK("Mo" ,"Mo" ,[1./2,sqrt(3)/2,0],MoMo)
+H03.fill_SK("S_u","S_u",[1./2,sqrt(3)/2,0],SS)
+H03.fill_SK("S_d","S_d",[1./2,sqrt(3)/2,0],SS)
+H01.fill_SK("S_d","S_d",[0.4483428791,0.7765526458,0.4426676528],SMo)
+H01.fill_SK("S_d","S_d",[0.4483428791,0.7765526458,-0.4426676528],SMo)
