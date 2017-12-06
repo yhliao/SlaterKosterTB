@@ -1,10 +1,13 @@
+from __future__ import division
 from math import sqrt
-
 class SK2E:
    def __init__(self):
       pass
 
    def calc_E(self,l,m,n,orb1,orb2,SKparam):
+      ## If spin opposite, return 0
+      if (orb1.count('_') + orb2.count('_'))==1:
+         return 0
       ### Remove spin dependencies
       orb1 = orb1.replace("_","")
       orb2 = orb2.replace("_","")

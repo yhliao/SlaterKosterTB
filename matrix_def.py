@@ -52,7 +52,7 @@ class TBblock:
       l = lmn[0]
       m = lmn[1]
       n = lmn[2]
-      assert(np.isclose(norm_lmn,1))
+      assert(np.isclose(norm_lmn,1,1e-6))
       for orb_r in orbitals :
          r_idx = get_index(atom_r,orb_r)
          for orb_c in orbitals :
@@ -79,7 +79,7 @@ class TBblock:
          ## make sure it is hermitian
          self.H[idx1,idx0] = lambda_SO*np.conj(term[2])
 
-   def get_block(k):
+   def get_block(self,k):
       ## k: wavevector specified for band structure calculation
       phase = np.dot(self.d,k)
       return self.H * np.exp(1j*phase)
