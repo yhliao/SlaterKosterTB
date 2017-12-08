@@ -19,6 +19,14 @@ SO_terms =[
    ["y_","z" ,1j],
 ]
 
+SO_terms =[
+   ["x" ,"y"  ,-1j],
+   ["x" ,"z_" ,1],
+   ["y" ,"z_" ,-1j],
+   ["z" ,"x_" ,-1],
+   ["z" ,"y_" ,1j],
+   ["x_","y_" ,1j],
+]
 atom_num    = len(atoms)
 orbital_num = len(orbitals)
 H_dim = atom_num * orbital_num
@@ -71,13 +79,13 @@ class TBblock:
          self.H[idx,idx] = osparam[orb.replace("_","")]
 
       ## spin-orbit interactions
-      lambda_SO = osparam["SO"] 
+      delta_SO = osparam["SO"]/3 
       for term in SO_terms:
          idx0 = get_index(atom,term[0])
          idx1 = get_index(atom,term[1])
-         self.H[idx0,idx1] = lambda_SO*term[2]
+         self.H[idx0,idx1] = delta_SO*term[2]
          ## make sure it is hermitian
-         self.H[idx1,idx0] = lambda_SO*np.conj(term[2])
+         self.H[idx1,idx0] = delta_SO*np.conj(term[2])
 
    def get_block(self,k):
       ## k: wavevector specified for band structure calculation
