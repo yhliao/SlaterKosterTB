@@ -3,9 +3,9 @@ from param_OnSite import Mo, S
 from param_SK import MoMo, SS, MoS, SMo
 from matrix_def import TBblock, H_dim
 from math import sqrt
-from numpy.linalg import norm, eigh
+from numpy.linalg import norm
 import numpy as np
-from matplotlib import pyplot as plt
+
 ### Direction Cosines
 def lmn(r):
    assert(len(r)==3)
@@ -22,11 +22,11 @@ def H(K):
    H += H04.get_block(K)
    H += H05.get_block(K)
    H += H06.get_block(K)
-   assert np.isclose(np.sum(H-H.H),0)
+   assert np.isclose(np.sum(np.abs(H-H.H)),0)
    return H
 
 a=3.18
-c=3.12
+c=3.135
 
 d00 = [0, 0]
 H00 = TBblock(d00)
@@ -90,19 +90,3 @@ H06.fill_SK("S_u","S_u",[1./2,sqrt(3)/2,0],SS)
 H06.fill_SK("S_d","S_d",[1./2,sqrt(3)/2,0],SS)
 H06.fill_SK("S_u","Mo",lmn([a/2,a/(2*sqrt(3)),-c/2]),SMo)
 H06.fill_SK("S_d","Mo",lmn([a/2,a/(2*sqrt(3)), c/2]),SMo)
-
-
-
-print lmn([a/2,a/(2*sqrt(3)),-c/2])
-E_GM = np.zeros([1000,H_dim])
-K_GM = np.linspace(-2*np.pi,2*np.pi,1000)
-for i,kx in enumerate(K_GM):
-   k   = [kx,0]
-   E,_ = eigh(H(k))
-   E_GM[i,:] = E
-
-plt.plot(K_GM,E_GM[:,:])
-plt.ylim([-5,5])
-plt.grid()
-plt.show()
-
