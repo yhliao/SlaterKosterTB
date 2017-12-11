@@ -20,13 +20,17 @@ for i,ky in enumerate(2*K/sqrt(3)):
    E_GM[i,:] = E
 axGM.plot(K,E_GM)
 axGM.set_ylim([-2.5,2.5])
-
+axGM.set_ylabel("Energy (eV)")
+axGM.set_xticks([])
+axGM.set_title("(a) $\Gamma$-M")
 for i,kx in enumerate(2*K/3):
    k_MK = [kx,2*np.pi/sqrt(3)]
    E,_  = eigh(H(k_MK))
    E_MK[i,:] = E
 axMK.plot(K,E_MK)
 axMK.set_ylim([-2.5,2.5])
+axMK.set_xticks([])
+axMK.set_title("(b) M-K")
 
 
 for i,kx in enumerate(reversed(4*K/3)):
@@ -35,6 +39,8 @@ for i,kx in enumerate(reversed(4*K/3)):
    E_KG[i,:] = E
 axKG.plot(K,E_KG)
 axKG.set_ylim([-2.5,2.5])
+axKG.set_xticks([])
+axKG.set_title("(c) K-$\Gamma$")
 
 
 plt.figure()
