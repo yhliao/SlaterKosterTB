@@ -1,5 +1,5 @@
 import numpy as np
-from MoS2TB import H, H_dim
+from SKmatrix.MoS2TB import H, H_dim
 from numpy.linalg import eigh
 from math import sqrt
 from matplotlib import pyplot as plt

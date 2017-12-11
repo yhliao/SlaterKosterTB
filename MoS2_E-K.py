@@ -1,4 +1,4 @@
-from MoS2TB import H, H_dim
+from SKmatrix.MoS2TB import H, H_dim
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy.linalg import eigh
