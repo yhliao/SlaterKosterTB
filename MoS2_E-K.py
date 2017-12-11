@@ -76,7 +76,7 @@ X_m_y=np.array([K[4],K[3],K[2],K[1],K[0],K[1],K[2],K[3],K[4]])
 Y_m_y=np.array([E_MK[195,14],E_MK[196,14],E_MK[197,14],E_MK[198,14],E_MK[199,14],E_MK[198,14],E_MK[197,14],E_MK[196,14],E_MK[195,14]])
 X_m_y=X_m_y*2/3/(3.18E-10)
 def extract_meff_y(x,B_y):
-	return (0.89855916+  B_y * x*x )
+	return (0.89855916437+  B_y * x*x )
 
 B_y  = optimize.curve_fit(extract_meff_y, X_m_y, Y_m_y)[0]
 
@@ -84,13 +84,15 @@ m_y=(1.0545718E-34)**2 / (B_y*2*1.6E-19)
 
 
 x_test_y = np.arange(-0.4E10, 0, 1E7)
-y_test_y=0.89855916+  B_y * x_test_y*x_test_y 
+y_test_y=0.89855916437+  B_y * x_test_y*x_test_y 
 plt.figure()
 plt.plot(K*2/3/(3.18E-10),E_MK,"-o")
 plt.plot(x_test_y+6.58614812E09,y_test_y,"red")
 plt.ylim([-2.5,2.5])
 plt.xlim([4E9,6.58614812E09])
 print(m_y/9.11E-31)
+
+
 plt.show()
 
 #print(K*2/3/(3.18E-10))
