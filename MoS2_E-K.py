@@ -44,63 +44,67 @@ axKG.set_xticks([])
 axKG.set_title("(c) K-$\Gamma$")
 
 
-plt.figure()
-plt.plot(np.vstack([E_GM,E_MK,E_KG]))
-plt.ylim([-2.5,2.5])
+#plt.figure()
+#plt.plot(np.vstack([E_GM,E_MK,E_KG]))
+#plt.ylim([-2.5,2.5])
 #plt.show()
 
 
 #################################################################
 ################calculating effective mass#######################
 #################################################################
+Ec   = 0.89855916
+hbar = 1.0545718e-34
+e    = 1.6e-19
+a0   = 3.18e-10
+m0   = 9.11e-31
+k0 = 6.68614812e9*2
+def extract_meff(x,B):
+	return (Ec+  B * x*x )
 
+idx_x = [4,3,2,1,0,1,2,3,4]
+X_m_x = K[idx_x]
+Y_m_x = E_KG[:,14][idx_x]
+X_m_x = X_m_x*4/3/a0
 
-X_m_x=np.array([K[4],K[3],K[2],K[1],K[0],K[1],K[2],K[3],K[4]])
-Y_m_x=np.array([E_KG[4,14],E_KG[3,14],E_KG[2,14],E_KG[1,14],E_KG[0,14],E_KG[1,14],E_KG[2,14],E_KG[3,14],E_KG[4,14]])
-X_m_x=X_m_x*4/3/(3.18E-10)
-def extract_meff_x(x,B_x):
-	return (0.89855916+  B_x * x*x )
+B_x = optimize.curve_fit(extract_meff, X_m_x, Y_m_x)[0]
+m_x = hbar**2 / (B_x*2*e)
+print(m_x/m0)
 
-B_x  = optimize.curve_fit(extract_meff_x, X_m_x, Y_m_x)[0]
+x_test_x = np.arange(-.4E10, 0.4E10, 1E7)
+y_test_x = Ec + B_x * x_test_x**2
 
-m_x=(1.0545718E-34)**2 / (B_x*2*1.6E-19)
-
-
-x_test_x = np.arange(0, 0.4E10, 1E7)
-y_test_x=0.89855916+  B_x * x_test_x*x_test_x 
-plt.figure()
-plt.plot(K*4/3/(3.18E-10),E_KG,"-o")
-plt.plot(x_test_x,y_test_x,"red")
-plt.ylim([-2.5,2.5])
-plt.xlim([0,0.4E10])
-print(m_x/9.11E-31)
-#plt.show()
-
+fig2 = plt.figure()
+ax21 = fig2.add_subplot(121)
+ax22 = fig2.add_subplot(122)
+ax21.plot(
+   k0+np.concatenate((-np.flip(K,0)*4/3/a0,K*4/3/a0)),
+   np.vstack((np.flip(E_KG,0),E_KG)))
+ax21.plot(x_test_x+k0,y_test_x,'--',c="red")
+ax21.set_xlim([-6e9+k0,6e9+k0])
+ax21.set_ylim([-2.5,2.5])
+ax21.set_xlabel("$k_x$ $(m^{-1})$")
+ax21.set_title("(a) $k_y$=0")
 ##
+idx_y = range(195,199)+range(199,194,-1)
+X_m_y = K[idx_x]
+Y_m_y = E_MK[:,14][idx_y]
+X_m_y = X_m_y*2/3/a0
 
-X_m_y=np.array([K[4],K[3],K[2],K[1],K[0],K[1],K[2],K[3],K[4]])
-Y_m_y=np.array([E_MK[195,14],E_MK[196,14],E_MK[197,14],E_MK[198,14],E_MK[199,14],E_MK[198,14],E_MK[197,14],E_MK[196,14],E_MK[195,14]])
-X_m_y=X_m_y*2/3/(3.18E-10)
-def extract_meff_y(x,B_y):
-	return (0.89855916437+  B_y * x*x )
+B_y = optimize.curve_fit(extract_meff, X_m_y, Y_m_y)[0]
+m_y = hbar**2 / (B_y*2*e)
 
-B_y  = optimize.curve_fit(extract_meff_y, X_m_y, Y_m_y)[0]
+x_test_y = np.arange(-0.4E10, 0.4e10, 1E7)
+y_test_y = Ec +  B_y * x_test_y**2
+print(m_y/m0)
 
-m_y=(1.0545718E-34)**2 / (B_y*2*1.6E-19)
-
-
-x_test_y = np.arange(-0.4E10, 0, 1E7)
-y_test_y=0.89855916437+  B_y * x_test_y*x_test_y 
-plt.figure()
-plt.plot(K*2/3/(3.18E-10),E_MK,"-o")
-plt.plot(x_test_y+6.58614812E09,y_test_y,"red")
-plt.ylim([-2.5,2.5])
-plt.xlim([4E9,6.58614812E09])
-print(m_y/9.11E-31)
-
+ax22.plot(
+   np.concatenate((-np.flip(K*2/3/a0,0),K*2/3/a0)),
+   np.vstack((E_MK,np.flip(E_MK,0))))
+ax22.plot(x_test_y,y_test_y,'--',c="red")
+ax22.set_ylim([-2.5,2.5])
+ax22.set_xlim([-6e9,6e9])
+ax22.set_xlabel("$k_y$ $(m^{-1})$")
+ax22.set_title("(b) $k_x$=$4\pi/3a_0$")
 
 plt.show()
-
-#print(K*2/3/(3.18E-10))
-
-#print(E_MK[199,14])
