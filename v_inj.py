@@ -17,12 +17,12 @@ dky = (2*np.pi/a)/(kstepy-1)
 
 fig1 = plt.figure()
 ax1 = fig1.add_subplot(111)
-fig2 = plt.figure()
-ax2 = fig2.add_subplot(121)
-ax3 = fig2.add_subplot(122)
+#fig2 = plt.figure()
+#ax2 = fig2.add_subplot(121)
+#ax3 = fig2.add_subplot(122)
 
-ca = ax1.imshow(E[14,:,:],cmap=cm.coolwarm)
-fig1.colorbar(ca,orientation="vertical")
+#ca = ax1.imshow(E[14,:,:],cmap=cm.coolwarm)
+#fig1.colorbar(ca,orientation="vertical")
 
 kBT = 0.0259 ## eV
 def fE(mu,E):
@@ -48,9 +48,6 @@ def v_inj(mus,maxband=16):
       assert vy.shape==E_vy.shape
       idx = vx > 0 
       idy = vy > 0
-      if i == 14:
-         ax2.imshow(idx)
-         ax3.imshow(idy)
 
       f_x = fE(mus,E_vx[idx])
       f_y = fE(mus,E_vy[idy])
@@ -67,15 +64,28 @@ Evmax = np.max(E[13,:,:])
 print ("Conduction Band Edge: {}eV".format(Ecmin))
 print ("Valence Band Edge: {}eV".format(Evmax))
 print ("Bandgap: {}eV".format(Ecmin-Evmax))
-for mus in np.linspace(-0.8,1,5):
-   vx, vy = v_inj(mus,16)
-   print vx,vy
 
+MUS = np.linspace(0,0.9,20)
+etas = MUS-Ecmin
+pattern = ['-^','-o']
+label = ['lowest CB only','Whole band']
+for imax,pat,lab in zip([15,16],pattern,label): 
+   VX = []
+   VY = []
 
-ax1.set_xticks([])
-ax2.set_xticks([])
-ax3.set_xticks([])
-ax1.set_yticks([])
-ax2.set_yticks([])
-ax3.set_yticks([])
+   print imax
+   for mus in MUS:
+      vx, vy = v_inj(mus,imax)
+      print vx,vy
+      VX.append(vx*100/1e7)
+      VY.append(vy*100/1e7)
+
+   ax1.plot(etas,VX,pat,c='r',label="$v_{inj,x}$ "+lab)
+   ax1.plot(etas,VY,pat,c='g',label="$v_{inj,y}$ "+lab)
+
+ax1.set_xlabel('$\mu_s-E_c\ (eV)$',fontsize=14)
+ax1.set_ylabel('$v_{inj}\ (10^7cm/s)$',fontsize=14)
+ax1.axhline(0.8385,linestyle='--',label="approximation from $m_{eff}$ (non-degenerate)")
+ax1.grid()
+ax1.legend(fontsize=12)
 plt.show()
